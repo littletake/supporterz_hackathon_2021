@@ -43,7 +43,7 @@
             />
           </div>
         </label>
-        <div id="howToUse">JPEG, PNG format can use this application</div>
+        <div id="howToUse">Only available on JPEG</div>
 
         <br />
         <div>

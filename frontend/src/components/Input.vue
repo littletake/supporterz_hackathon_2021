@@ -37,7 +37,7 @@
 
             <input
               type="file"
-              accept="image/*"
+              accept="image/jpeg"
               @change="onImageChange"
               multiple
             />
@@ -124,9 +124,18 @@ export default {
       this.images.splice(index, 1);
     },
 
-    checkGPS(files) {
+    checkTypeAndGPS(files) {
       return new Promise((resolve) => {
         files.forEach((file) => {
+          // 拡張子のチェック
+          const type = file.type;
+          if (type != "image/jpeg") {
+            alert(
+              "エラー: " + file.name + "\n拡張子がjpegの画像を選択してください"
+            );
+            return;
+          }
+          // GPSのチェック
           loadImage.parseMetaData(file, (data) => {
             if (data.exif && data.exif.get("GPSInfo")) {
               // console.log("fileWithGPS ", fileWithGPS);
@@ -162,12 +171,11 @@ export default {
     dropFile() {
       this.isEnter = false;
       const files = [...event.dataTransfer.files];
-      this.checkGPS(files);
+      this.checkTypeAndGPS(files);
     },
     onImageChange(e) {
-      // console.log("files");
       const files = e.target.files || e.dataTransfer.files;
-      this.checkGPS(files);
+      this.checkTypeAndGPS(files);
     },
 
     upload: function () {
